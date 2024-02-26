@@ -35,7 +35,7 @@ export const useUserList = () => {
     availableStartCode: "",
     availableEndCode: ""
   });
-
+  // eventはこのような形
   // const event = {
   //   target: {
   //     name: "",
@@ -99,15 +99,24 @@ const addUser = () => {
       return user.hobbies.includes(filter) || (user.studyLangs && user.studyLangs.includes(filter)) || (user.useLangs && user.useLangs.includes(filter));
     }
     return false;
+  }).sort((a, b) => {
+   // sortメソッドに関数を引数として渡してはいるが
+   // a,bは配列の1,2番目が順に入ってくる
+    const aValue = a[sortType.name];
+    const bValue = b[sortType.name];
+    { {console.log(sortType.name)} }
+    { {console.log(aValue)} }
+    { {console.log(sortType.isAsc)} }
+    if (sortType.isAsc) {
+      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+    } else {
+      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+    }
   });
-  // sortTypeを使用して並び替える
-  // この部分の実装がわかりません。
-  const sortedUsers = 
 
   return {
     filter,
     filteredUsers,
-    sortedUsers,
     newUser,
     sortType,
     currentRole,

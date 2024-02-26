@@ -6,7 +6,6 @@ function App() {
   const {
     filter,
     filteredUsers,
-    sortedUsers,
     newUser,
     sortType,
     currentRole,
@@ -30,34 +29,31 @@ function App() {
         <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Filter by hobby or language" />
         <button onClick={clearFilter}>Clear Filter</button>
       </div>
-     
       
       {/* オブジェクトを展開しつつnameを設定する */}
       {currentRole === 'student' && (
       <>
-        <select onChange={(e) => setSortType({name:"", isAsc:Boolean(e.target.value)})}>
-          {/* Booleanは引数に文字が入った時点でtrueになるのでfalseにするには空文字を入れる */}
-          <option value="true">昇順</option>
-          <option value="">降順</option>
-        </select>
-        <select onChange={(e) => setSortType({ ...sortType, name: e.target.value })}>
+        <select onChange={(e) => setSortType({ name: e.target.value, isAsc: sortType.isAsc })}>
           <option value="studyMinutes">Study Minutes</option>
           <option value="score">Happiness Score</option>
         </select>
+        <select onChange={(e) => setSortType({ name: sortType.name, isAsc: e.target.value === "true" })}>
+          <option value="true">昇順</option>
+          <option value="">降順</option>
+        </select>
       </>
-      )}
+    )}
       {currentRole === 'mentor' && (
-      <>
-        <select onChange={(e) => setSortType({name:"", isAsc:Boolean(e.target.value)})}>
-         {/* Booleanは引数に文字が入った時点でtrueになるのでfalseにするには空文字を入れる */}
-         <option value="true">昇順</option>
-         <option value="">降順</option>
-        </select>
-        <select onChange={(e) => setSortType({ ...sortType, name: e.target.value })}>
-          <option value="experienceDays">Experience Days</option>
-        </select>
-      </>
-      )}
+    <>
+      <select onChange={(e) => setSortType({ name: e.target.value, isAsc: sortType.isAsc })}>
+        <option value="experienceDays">Experience Days</option>
+      </select>
+      <select onChange={(e) => setSortType({ name: "experienceDays", isAsc: e.target.value === "true" })}>
+        <option value="true">昇順</option>
+        <option value="">降順</option>
+      </select>
+    </>
+  )}
       <table>
         {/* テーブルヘッダー */}
         <thead>
@@ -82,7 +78,7 @@ function App() {
         </thead>
         {/* テーブル */}
         <tbody>
-          {sortedUsers.map((user: any) => (
+          {filteredUsers.map((user: any) => (
             <tr key={user.id}>
               <td>{user.name}</td>
               <td>{user.role}</td>
