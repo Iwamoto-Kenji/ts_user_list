@@ -16,6 +16,7 @@ function App() {
     clearFilter,
     addUser,
     clearAllUsers,
+    onChangeNewUser
   } = useUserList()
 
   return (
@@ -102,25 +103,25 @@ function App() {
       </table>
       {/* User新規追加 */}
       <div>
-        <h2>Add New User</h2>
-        <input type="text" placeholder="Name" value={newUser.name} onChange={(e) => setNewUser({ ...newUser, name: e.target.value })} />
-        <input type="text" placeholder="Role" value={newUser.role} onChange={(e) => setNewUser({ ...newUser, role: e.target.value })} />
-        <input type="text" placeholder="Email" value={newUser.email} onChange={(e) => setNewUser({ ...newUser, email: e.target.value })} />
-        <input type="text" placeholder="Age" value={newUser.age} onChange={(e) => setNewUser({ ...newUser, age: e.target.value })} />
-        <input type="text" placeholder="Post Code" value={newUser.postCode} onChange={(e) => setNewUser({ ...newUser, postCode: e.target.value })} />
-        <input type="text" placeholder="Phone" value={newUser.phone} onChange={(e) => setNewUser({ ...newUser, phone: e.target.value })} />
-        <input type="text" placeholder="Hobbies (comma separated)" value={newUser.hobbies} onChange={(e) => setNewUser({ ...newUser, hobbies: e.target.value })} />
-        <input type="text" placeholder="URL" value={newUser.url} onChange={(e) => setNewUser({ ...newUser, url: e.target.value })} />
-        <input type="text" placeholder="Study Minutes" value={newUser.studyMinutes} onChange={(e) => setNewUser({ ...newUser, studyMinutes: e.target.value })} />
-        <input type="text" placeholder="Task Code" value={newUser.taskCode} onChange={(e) => setNewUser({ ...newUser, taskCode: e.target.value })} />
-        <input type="text" placeholder="Study Languages (comma separated)" value={newUser.studyLangs} onChange={(e) => setNewUser({ ...newUser, studyLangs: e.target.value })} />
-        <input type="text" placeholder="Happiness Score" value={newUser.score} onChange={(e) => setNewUser({ ...newUser, score: e.target.value })} />
-        <input type="text" placeholder="Experience Days" value={newUser.experienceDays} onChange={(e) => setNewUser({ ...newUser, experienceDays: e.target.value })} />
-        <input type="text" placeholder="Used Languages (comma separated)" value={newUser.useLangs} onChange={(e) => setNewUser({ ...newUser, useLangs: e.target.value })} />
-        <input type="text" placeholder="Available Start Code" value={newUser.availableStartCode} onChange={(e) => setNewUser({ ...newUser, availableStartCode: e.target.value })} />
-        <input type="text" placeholder="Available End Code" value={newUser.availableEndCode} onChange={(e) => setNewUser({ ...newUser, availableEndCode: e.target.value })} />
-        <button onClick={addUser}>Add User</button>
-        <button onClick={clearAllUsers}>Clear All Users</button>
+      <h2>Add New User</h2>
+      <input type="text" name="name" placeholder="Name" value={newUser.name} onChange={onChangeNewUser} />
+      <input type="text" name="role" placeholder="Role" value={newUser.role} onChange={onChangeNewUser} />
+      <input type="text" name="email" placeholder="Email" value={newUser.email} onChange={onChangeNewUser} />
+      <input type="text" name="age" placeholder="Age" value={newUser.age} onChange={onChangeNewUser} />
+      <input type="text" name="postCode" placeholder="Post Code" value={newUser.postCode} onChange={onChangeNewUser} />
+      <input type="text" name="phone" placeholder="Phone" value={newUser.phone} onChange={onChangeNewUser} />
+      <input type="text" name="hobbies" placeholder="Hobbies (comma separated)" value={newUser.hobbies} onChange={onChangeNewUser} />
+      <input type="text" name="url" placeholder="URL" value={newUser.url} onChange={onChangeNewUser} />
+      <input type="text" name="studyMinutes" placeholder="Study Minutes" value={newUser.studyMinutes} onChange={onChangeNewUser} />
+      <input type="text" name="taskCode" placeholder="Task Code" value={newUser.taskCode} onChange={onChangeNewUser} />
+      <input type="text" name="studyLangs" placeholder="Study Languages (comma separated)" value={newUser.studyLangs} onChange={onChangeNewUser} />
+      <input type="text" name="score" placeholder="Happiness Score" value={newUser.score} onChange={onChangeNewUser} />
+      <input type="text" name="experienceDays" placeholder="Experience Days" value={newUser.experienceDays} onChange={onChangeNewUser} />
+      <input type="text" name="useLangs" placeholder="Used Languages (comma separated)" value={newUser.useLangs} onChange={onChangeNewUser} />
+      <input type="text" name="availableStartCode" placeholder="Available Start Code" value={newUser.availableStartCode} onChange={onChangeNewUser} />
+      <input type="text" name="availableEndCode" placeholder="Available End Code" value={newUser.availableEndCode} onChange={onChangeNewUser} />
+      <button onClick={addUser}>Add User</button>
+      <button onClick={clearAllUsers}>Clear All Users</button>
       </div>
     </div>
   );

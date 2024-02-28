@@ -1,5 +1,25 @@
 import React, { ChangeEvent, useState } from 'react';
 
+type UserType = {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  age: number;
+  postCode: string;
+  phone: string;
+  hobbies: string[];
+  url: string;
+  studyMinutes?: number;
+  taskCode?: number;
+  studyLangs?: string[];
+  score?: number;
+  experienceDays?: number;
+  useLangs?: string[];
+  availableStartCode?: number;
+  availableEndCode?: number;
+};
+
 const USER_LIST = [
   { id: 1, name: "鈴木太郎", role: "student", email: "test1@happiness.com", age: 26, postCode: "100-0003", phone: "0120000001", hobbies: ["旅行", "食べ歩き", "サーフィン"], url: "https://aaa.com", studyMinutes: 3000, taskCode: 101, studyLangs: ["Rails", "Javascript"], score: 68 },
   { id: 2, name: "鈴木二郎", role: "mentor", email: "test2@happiness.com", age: 31, postCode: "100-0005", phone: "0120000002", hobbies: ["サッカー", "ランニング", "筋トレ"], url: "https://bbb.com", experienceDays: 1850, useLangs: ["Next.js", "GoLang"], availableStartCode: 201, availableEndCode: 302 },
@@ -10,13 +30,12 @@ const USER_LIST = [
   { id: 7, name: "鈴木七郎", role: "student", email: "test7@happiness.com", age: 24, postCode: "300-0008", phone: "0120000007", hobbies: ["筋トレ", "ダーツ"], url: "https://ggg.com", studyMinutes: 26900, taskCode: 401, studyLangs: ["PHP", "Rails"], score: 73 },
   { id: 8, name: "鈴木八郎", role: "mentor", email: "test8@happiness.com", age: 33, postCode: "100-0009", phone: "0120000008", hobbies: ["ランニング", "旅行"], url: "https://hhh.com", experienceDays: 6000, useLangs: ["Golang", "Rails"], availableStartCode: 301, availableEndCode: 505 },
 ];
+type RoleType = 'all' | 'student' | 'mentor';
 
 export const useUserList = () => {
-  const [users, setUsers] = useState<any[]>(USER_LIST);
+  const [users, setUsers] = useState<UserType[]>(USER_LIST);
   const [filter, setFilter] = useState("");
-  const [currentRole, setCurrentRole] = useState("all");
-  const [sortBy, setSortBy] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<string>("asc");
+  const [currentRole, setCurrentRole] = useState<RoleType>("all");
   const [newUser, setNewUser] = useState<any>({
     name: "",
     role: "",
@@ -45,10 +64,9 @@ export const useUserList = () => {
 
   const [sortType, setSortType] = useState({name: "", isAsc: true});
 
-  const handleTabClick = (role: string) => {
+  const handleTabClick = (role: RoleType) => {
     setCurrentRole(role);
     setFilter("");
-    setSortBy(null);
   };
 
   const clearFilter = () => {
@@ -102,11 +120,8 @@ const addUser = () => {
   }).sort((a, b) => {
    // sortメソッドに関数を引数として渡してはいるが
    // a,bは配列の1,2番目が順に入ってくる
-    const aValue = a[sortType.name];
-    const bValue = b[sortType.name];
-    { {console.log(sortType.name)} }
-    { {console.log(aValue)} }
-    { {console.log(sortType.isAsc)} }
+    const aValue = a[sortType.name as keyof UserType] || 0;
+    const bValue = b[sortType.name as keyof UserType] || 0;
     if (sortType.isAsc) {
       return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
     } else {
@@ -114,6 +129,11 @@ const addUser = () => {
     }
   });
 
+  const onChangeNewUser = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setNewUser({ ...newUser, [name]: value })
+  } 
+  
   return {
     filter,
     filteredUsers,
@@ -127,5 +147,6 @@ const addUser = () => {
     handleTabClick,
     addUser,
     clearAllUsers,
+    onChangeNewUser
   }
 }
