@@ -1,0 +1,178 @@
+import React, { ChangeEvent, useState } from 'react';
+
+type UserType = {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  age: number;
+  postCode: string;
+  phone: string;
+  hobbies: string[];
+  url: string;
+  studyMinutes?: number;
+  taskCode?: number;
+  studyLangs?: string[];
+  score?: number;
+  experienceDays?: number;
+  useLangs?: string[];
+  availableStartCode?: number;
+  availableEndCode?: number;
+};
+
+type NewUserType = {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  age: number;
+  postCode: string;
+  phone: string;
+  hobbies: string[];
+  url: string;
+  studyMinutes?: number;
+  taskCode?: number;
+  studyLangs?: string[];
+  score?: number;
+  experienceDays?: number;
+  useLangs?: string[];
+  availableStartCode?: number;
+  availableEndCode?: number;
+};
+
+const USER_LIST = [
+  { id: 1, name: "鈴木太郎", role: "student", email: "test1@happiness.com", age: 26, postCode: "100-0003", phone: "0120000001", hobbies: ["旅行", "食べ歩き", "サーフィン"], url: "https://aaa.com", studyMinutes: 3000, taskCode: 101, studyLangs: ["Rails", "Javascript"], score: 68 },
+  { id: 2, name: "鈴木二郎", role: "mentor", email: "test2@happiness.com", age: 31, postCode: "100-0005", phone: "0120000002", hobbies: ["サッカー", "ランニング", "筋トレ"], url: "https://bbb.com", experienceDays: 1850, useLangs: ["Next.js", "GoLang"], availableStartCode: 201, availableEndCode: 302 },
+  { id: 3, name: "鈴木三郎", role: "student", email: "test3@happiness.com", age: 23, postCode: "300-0332", phone: "0120000003", hobbies: ["アニメ", "ゲーム", "旅行"], url: "https://ccc.com", studyMinutes: 125000, taskCode: 204, studyLangs: ["Rails", "Next.js"], score: 90 },
+  { id: 4, name: "鈴木四郎", role: "mentor", email: "test4@happiness.com", age: 31, postCode: "100-0005", phone: "0120000004", hobbies: ["食べ歩き", "ランニング", "旅行"], url: "https://ddd.com", experienceDays: 260, useLangs: ["PHP", "Javascript"], availableStartCode: 103, availableEndCode: 408 },
+  { id: 5, name: "鈴木五郎", role: "student", email: "test5@happiness.com", age: 22, postCode: "300-0005", phone: "0120000005", hobbies: ["筋トレ", "ランニング"], url: "https://eee.com", studyMinutes: 47800, taskCode: 305, studyLangs: ["Next.js", "Rails"], score: 84 },
+  { id: 6, name: "鈴木六郎", role: "mentor", email: "test6@happiness.com", age: 28, postCode: "100-0007", phone: "0120000006", hobbies: ["ゲーム", "サッカー"], url: "https://fff.com", experienceDays: 260, useLangs: ["PHP", "Javascript"], availableStartCode: 101, availableEndCode: 302 },
+  { id: 7, name: "鈴木七郎", role: "student", email: "test7@happiness.com", age: 24, postCode: "300-0008", phone: "0120000007", hobbies: ["筋トレ", "ダーツ"], url: "https://ggg.com", studyMinutes: 26900, taskCode: 401, studyLangs: ["PHP", "Rails"], score: 73 },
+  { id: 8, name: "鈴木八郎", role: "mentor", email: "test8@happiness.com", age: 33, postCode: "100-0009", phone: "0120000008", hobbies: ["ランニング", "旅行"], url: "https://hhh.com", experienceDays: 6000, useLangs: ["Golang", "Rails"], availableStartCode: 301, availableEndCode: 505 },
+];
+type RoleType = 'all' | 'student' | 'mentor';
+
+export const useUserList = () => {
+  const [users, setUsers] = useState<UserType[]>(USER_LIST);
+  const [filter, setFilter] = useState("");
+  const [currentRole, setCurrentRole] = useState<RoleType>("all");
+  const [newUser, setNewUser] = useState<NewUserType>({
+    id: 0,
+    name: "",
+    role: "",
+    email: "",
+    age: 0,
+    postCode: "",
+    phone: "",
+    hobbies: [],
+    url: "",
+    studyMinutes: 0,
+    taskCode: 0,
+    studyLangs: [],
+    score: 0,
+    experienceDays: 0,
+    useLangs: [],
+    availableStartCode: 0,
+    availableEndCode: 0
+  });
+  // eventはこのような形
+  // const event = {
+  //   target: {
+  //     name: "",
+  //     value: ""
+  //   }
+  // }
+
+  const [sortType, setSortType] = useState({name: "", isAsc: true});
+
+  const handleTabClick = (role: RoleType) => {
+    setCurrentRole(role);
+    setFilter("");
+    if (role === "mentor") {
+      setSortType({ name: "experienceDays", isAsc: true });
+    }
+  };
+
+  const clearFilter = () => {
+    setFilter("");
+  };
+
+const addUser = () => {
+  // 趣味文字列をカンマで分割して配列に変換
+  const newId = users.length + 1
+  const hobbiesArray = Array.isArray(newUser.hobbies) ? newUser.hobbies.join(",").split(",").map((hobby: string) => hobby.trim()) : [];
+  const studyLangsArray = Array.isArray(newUser.studyLangs) ? newUser.studyLangs.join(",").split(",").map((studyLangs: string) => studyLangs.trim()) : [];
+  const useLangsArray = Array.isArray(newUser.useLangs) ? newUser.useLangs.join(",").split(",").map((useLangs: string) => useLangs.trim()) : [];
+
+  if (newUser.name && newUser.role && newUser.email && newUser.age && newUser.postCode && newUser.phone && newUser.hobbies && newUser.url) {
+    // newUser内のhobbiesは文字列だがhobbiesは元々配列なので
+    setUsers([...users, { ...newUser, id: newId, hobbies: hobbiesArray, studyLangs: studyLangsArray, useLangs: useLangsArray }]);
+
+    // テキスト欄で入力するので文字列
+    setNewUser({
+      id: 0,
+      name: "",
+      role: "",
+      email: "",
+      age: 0,
+      postCode: "",
+      phone: "",
+      hobbies: [],
+      url: "",
+      studyMinutes: 0,
+      taskCode: 0,
+      studyLangs: [],
+      score: 0,
+      experienceDays: 0,
+      useLangs: [],
+      availableStartCode: 0,
+      availableEndCode: 0
+    });
+  } else {
+    alert("All fields are required.");
+  }
+};
+
+  const clearAllUsers = () => {
+    setUsers([]);
+  };
+
+  const filteredUsers = users.filter((user: any) => {
+    if (currentRole === "all" || user.role === currentRole) {
+      if (filter === "") return true;
+      return user.hobbies.includes(filter) || (user.studyLangs && user.studyLangs.includes(filter)) || (user.useLangs && user.useLangs.includes(filter));
+    }
+    return false;
+  }).sort((a, b) => {
+   // sortメソッドに関数を引数として渡してはいるが
+   // a,bは配列の1,2番目が順に入ってくる
+    const aValue = a[sortType.name as keyof UserType] || 0;
+    const bValue = b[sortType.name as keyof UserType] || 0;
+    if (sortType.isAsc) {
+      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+    } else {
+      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+    }
+  });
+
+  const onChangeNewUser = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setNewUser({ ...newUser, [name]: value })
+  } 
+  
+  return {
+    filter,
+    filteredUsers,
+    newUser,
+    sortType,
+    currentRole,
+    setFilter,
+    setSortType,
+    setNewUser,
+    clearFilter,
+    handleTabClick,
+    addUser,
+    clearAllUsers,
+    onChangeNewUser
+  }
+}
