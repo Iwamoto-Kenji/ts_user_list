@@ -20,6 +20,26 @@ type UserType = {
   availableEndCode?: number;
 };
 
+type NewUserType = {
+  id: number;
+  name: string;
+  role: string;
+  email: string;
+  age: number;
+  postCode: string;
+  phone: string;
+  hobbies: string[];
+  url: string;
+  studyMinutes?: number;
+  taskCode?: number;
+  studyLangs?: string[];
+  score?: number;
+  experienceDays?: number;
+  useLangs?: string[];
+  availableStartCode?: number;
+  availableEndCode?: number;
+};
+
 const USER_LIST = [
   { id: 1, name: "鈴木太郎", role: "student", email: "test1@happiness.com", age: 26, postCode: "100-0003", phone: "0120000001", hobbies: ["旅行", "食べ歩き", "サーフィン"], url: "https://aaa.com", studyMinutes: 3000, taskCode: 101, studyLangs: ["Rails", "Javascript"], score: 68 },
   { id: 2, name: "鈴木二郎", role: "mentor", email: "test2@happiness.com", age: 31, postCode: "100-0005", phone: "0120000002", hobbies: ["サッカー", "ランニング", "筋トレ"], url: "https://bbb.com", experienceDays: 1850, useLangs: ["Next.js", "GoLang"], availableStartCode: 201, availableEndCode: 302 },
@@ -36,23 +56,24 @@ export const useUserList = () => {
   const [users, setUsers] = useState<UserType[]>(USER_LIST);
   const [filter, setFilter] = useState("");
   const [currentRole, setCurrentRole] = useState<RoleType>("all");
-  const [newUser, setNewUser] = useState<any>({
+  const [newUser, setNewUser] = useState<NewUserType>({
+    id: 0,
     name: "",
     role: "",
     email: "",
-    age: "",
+    age: 0,
     postCode: "",
     phone: "",
-    hobbies: "",
+    hobbies: [],
     url: "",
-    studyMinutes: "",
-    taskCode: "",
-    studyLangs: "",
-    score: "",
-    experienceDays: "",
-    useLangs: "",
-    availableStartCode: "",
-    availableEndCode: ""
+    studyMinutes: 0,
+    taskCode: 0,
+    studyLangs: [],
+    score: 0,
+    experienceDays: 0,
+    useLangs: [],
+    availableStartCode: 0,
+    availableEndCode: 0
   });
   // eventはこのような形
   // const event = {
@@ -67,6 +88,9 @@ export const useUserList = () => {
   const handleTabClick = (role: RoleType) => {
     setCurrentRole(role);
     setFilter("");
+    if (role === "mentor") {
+      setSortType({ name: "experienceDays", isAsc: true });
+    }
   };
 
   const clearFilter = () => {
@@ -75,32 +99,34 @@ export const useUserList = () => {
 
 const addUser = () => {
   // 趣味文字列をカンマで分割して配列に変換
-  const hobbiesArray = newUser.hobbies.split(",").map((hobby: string) => hobby.trim());
-  const studyLangsArray = newUser.studyLangs.split(",").map((studyLangs: string) => studyLangs.trim());
-  const useLangsArray = newUser.useLangs.split(",").map((useLangs: string) => useLangs.trim());
+  const newId = users.length + 1
+  const hobbiesArray = Array.isArray(newUser.hobbies) ? newUser.hobbies.join(",").split(",").map((hobby: string) => hobby.trim()) : [];
+  const studyLangsArray = Array.isArray(newUser.studyLangs) ? newUser.studyLangs.join(",").split(",").map((studyLangs: string) => studyLangs.trim()) : [];
+  const useLangsArray = Array.isArray(newUser.useLangs) ? newUser.useLangs.join(",").split(",").map((useLangs: string) => useLangs.trim()) : [];
 
   if (newUser.name && newUser.role && newUser.email && newUser.age && newUser.postCode && newUser.phone && newUser.hobbies && newUser.url) {
     // newUser内のhobbiesは文字列だがhobbiesは元々配列なので
-    setUsers([...users, { id: users.length + 1, ...newUser, hobbies: hobbiesArray, studyLangs: studyLangsArray, useLangs: useLangsArray }]);
+    setUsers([...users, { ...newUser, id: newId, hobbies: hobbiesArray, studyLangs: studyLangsArray, useLangs: useLangsArray }]);
 
     // テキスト欄で入力するので文字列
     setNewUser({
+      id: 0,
       name: "",
       role: "",
       email: "",
-      age: "",
+      age: 0,
       postCode: "",
       phone: "",
-      hobbies: "",
+      hobbies: [],
       url: "",
-      studyMinutes: "",
-      taskCode: "",
-      studyLangs: "",
-      score: "",
-      experienceDays: "",
-      useLangs: "",
-      availableStartCode: "",
-      availableEndCode: ""
+      studyMinutes: 0,
+      taskCode: 0,
+      studyLangs: [],
+      score: 0,
+      experienceDays: 0,
+      useLangs: [],
+      availableStartCode: 0,
+      availableEndCode: 0
     });
   } else {
     alert("All fields are required.");

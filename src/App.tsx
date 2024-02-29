@@ -32,29 +32,28 @@ function App() {
       </div>
       
       {/* オブジェクトを展開しつつnameを設定する */}
-      {currentRole === 'student' && (
       <>
         <select onChange={(e) => setSortType({ name: e.target.value, isAsc: sortType.isAsc })}>
-          <option value="studyMinutes">Study Minutes</option>
-          <option value="score">Happiness Score</option>
+        {currentRole === 'student' && (
+          <>
+            <option value="studyMinutes">Study Minutes</option>
+            <option value="score">Happiness Score</option>
+          </>
+        )}
+        {currentRole === 'mentor' && (
+          <option value="experienceDays">Experience Days</option>
+        )}
         </select>
+      </>
+      {(currentRole === 'student'|| currentRole === 'mentor') && (
+      <>
         <select onChange={(e) => setSortType({ name: sortType.name, isAsc: e.target.value === "true" })}>
           <option value="true">昇順</option>
           <option value="">降順</option>
         </select>
       </>
-    )}
-      {currentRole === 'mentor' && (
-    <>
-      <select onChange={(e) => setSortType({ name: e.target.value, isAsc: sortType.isAsc })}>
-        <option value="experienceDays">Experience Days</option>
-      </select>
-      <select onChange={(e) => setSortType({ name: "experienceDays", isAsc: e.target.value === "true" })}>
-        <option value="true">昇順</option>
-        <option value="">降順</option>
-      </select>
-    </>
-  )}
+      )}
+
       <table>
         {/* テーブルヘッダー */}
         <thead>
